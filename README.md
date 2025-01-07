@@ -16,6 +16,7 @@ cat input.txt | ./ascii-table-maker
 
 The program will generate and display the following formatted ASCII table:
 
+
 +------+-------+-------+
 | test | test2 | test3 |
 +------+-------+-------+

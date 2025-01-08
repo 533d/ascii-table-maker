@@ -5,7 +5,7 @@
 
 enum State {BORDER, VALUE};
 
-void getColumns(std::vector<std::string> &columns, int &col_num) {
+void getRow(std::vector<std::string> &columns) {
     State state = BORDER;
     char ch;
     std::string buffer;
@@ -18,44 +18,7 @@ void getColumns(std::vector<std::string> &columns, int &col_num) {
     while (true) {
         switch (state) {
             case BORDER:
-                if (std::cin.peek() == '\n') {
-                    return;
-                }
-                state = VALUE;
-                break;
-
-            case VALUE:
-                while (std::cin.get(ch)) {
-                    if (ch != '|') {
-                        buffer += ch;
-                    }
-                    else {
-                        col_num++;
-                        columns.push_back(buffer);
-                        buffer.clear();
-                        state = BORDER;
-                        break;
-                    }
-                }
-        }
-    }
-}
-
-void getValue(std::vector<std::string> &columns) {
-    State state = BORDER;
-    char ch;
-    std::string buffer;
-
-    std::cin.get(ch);
-    if (ch != '|') {
-        printf("RET\n");
-        return;
-    }
-
-    while (true) {
-        switch (state) {
-            case BORDER:
-                if (std::cin.peek() == '\n') {
+                if (std::cin.peek() == '\n' || std::cin.peek() == EOF) {
                     return;
                 }
                 state = VALUE;
@@ -109,9 +72,8 @@ void printTextTable(const std::vector<std::vector<std::string>> table, int col_n
 int main() {
     std::vector<std::vector<std::string>> table;
     table.push_back(std::vector<std::string>());
-    int col_num = 0;
-
-    getColumns(table[0], col_num);
+    getRow(table[0]);
+    int col_num = table[0].size();
     
     int row_num = 0;
     while (std::cin.peek() == '\n') {
@@ -121,7 +83,7 @@ int main() {
         }
         row_num++;
         table.push_back(std::vector<std::string>());
-        getValue(table[row_num]);
+        getRow(table[row_num]);
     }
 
     printTextTable(table, col_num);
